@@ -132,6 +132,8 @@ function App() {
                       name="credit"
                       label="Credit"
                       type="number"
+                      min="0"
+                      max="100"
                       value={inputField.credit}
                       onChange={(e) => handleChangeInput(index, e)}
                       required

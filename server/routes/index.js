@@ -14,12 +14,16 @@ routes.post(
   "/",
   [
     check("info", "กรุณากรอกข้อมูลให้ครบถ้วน").isArray().not().isEmpty(),
-    check("info.*.score", "กรุณากรอกข้อมูล").isNumeric().not().isEmpty(),
+    check("info.*.score", " กรุณากรอกข้อมูล").isNumeric().not().isEmpty(),
+    check("info.*.score", "score อยู่ระหว่าง 0-100").isInt({
+      min: 0,
+      max: 100,
+    }),
     check("info.*.credit", "กรุณากรอกข้อมูล หรือ หน่วยกิตควรไม่เกิน 3")
       .isNumeric()
-      .isIn([1, 1.5, 2, 2.5, 3])
       .not()
       .isEmpty(),
+    check("info.*.credit", "credit ควรจะเป็น 1-3").isIn([1, 1.5, 2, 2.5, 3]),
   ],
   (req, res) => {
     const error = validationResult(req);
