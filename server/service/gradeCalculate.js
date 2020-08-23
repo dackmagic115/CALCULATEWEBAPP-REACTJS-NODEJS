@@ -12,10 +12,11 @@ exports.calculateGrade = (input) => {
 
     return acc;
   }, []);
+
   const totalGradeCreadit = findSumTotalGradeCreadit(gradeInfo);
   const totalCredit = findSumCredit(gradeInfo);
   const averageGrade = findAverageGrade(totalCredit, totalGradeCreadit);
-
+  console.log(gradeInfo, totalCredit, averageGrade);
   return { averageGrade: averageGrade.toFixed(2), info: gradeInfo };
 };
 
@@ -31,7 +32,7 @@ const findSumCredit = (gradeInfo) => {
   if (!isArray(gradeInfo)) throw new Error("BROKEN");
 
   const totalCredit = gradeInfo.reduce((acc, curr) => {
-    return acc + curr.credit;
+    return acc + +curr.credit;
   }, 0);
 
   return totalCredit;
