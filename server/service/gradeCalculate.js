@@ -16,7 +16,6 @@ exports.calculateGrade = (input) => {
   const totalGradeCreadit = findSumTotalGradeCreadit(gradeInfo);
   const totalCredit = findSumCredit(gradeInfo);
   const averageGrade = findAverageGrade(totalCredit, totalGradeCreadit);
-  console.log(gradeInfo, totalCredit, averageGrade);
   return { averageGrade: averageGrade.toFixed(2), info: gradeInfo };
 };
 
@@ -57,14 +56,14 @@ const findGradeAlphabet = (score) => {
 
   if (score > 100) throw new Error("BROKEN");
 
-  if (score >= 84) return "A";
-  if (score >= 83 && score <= 78) return "A-";
-  if (score >= 77 && score <= 70) return "B";
-  if (score >= 69 && score <= 65) return "B-";
-  if (score >= 64 && score <= 60) return "C";
-  if (score >= 59 && score <= 55) return "C-";
-  if (score >= 54 && score <= 50) return "D";
-  if (score > 50) return "F";
+  if (score >= 80) return "A";
+  if (score <= 79 && score >= 75) return "B+";
+  if (score <= 74 && score >= 70) return "B";
+  if (score <= 69 && score >= 65) return "C+";
+  if (score <= 64 && score >= 60) return "C";
+  if (score <= 59 && score >= 55) return "D+";
+  if (score <= 54 && score >= 50) return "D";
+  if (score < 50) return "F";
 };
 
 const findAverageGrade = (totalCredit, totalGrade) => {
