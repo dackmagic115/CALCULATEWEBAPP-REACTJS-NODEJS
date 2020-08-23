@@ -1,14 +1,13 @@
 exports.calculateGrade = (input) => {
   if (!isArray(input)) return console.log("error");
-
   const gradeInfo = input.reduce((acc, curr) => {
     acc.push({
       name: curr.name,
       score: curr.score,
       credit: curr.credit,
-      gradeNumber: findGradeNumber(curr.score),
-      gradeAlphabet: findGradeAlphabet(curr.score),
-      totalGradeCreadit: findGradeNumber(curr.score) * curr.credit,
+      gradeNumber: findGradeNumber(+curr.score),
+      gradeAlphabet: findGradeAlphabet(+curr.score),
+      totalGradeCreadit: findGradeNumber(+curr.score) * +curr.credit,
     });
 
     return acc;
@@ -40,7 +39,6 @@ const findSumCredit = (gradeInfo) => {
 
 const findGradeNumber = (score) => {
   if (typeof score !== "number") throw new Error("BROKEN");
-
   if (score > 100) throw new Error("BROKEN");
 
   if (score >= 80) return 4;
