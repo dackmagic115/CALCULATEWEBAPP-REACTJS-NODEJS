@@ -15,7 +15,7 @@ routes.post(
   [
     check("info", "กรุณากรอกข้อมูลให้ครบถ้วน").isArray().not().isEmpty(),
     check("info.*.score", "กรุณากรอกข้อมูล").isNumeric().not().isEmpty(),
-    check("info.*.credit", "กรุณากรอกข้อมูล หรือ หน่วยกิตควรไม่เกิด 3")
+    check("info.*.credit", "กรุณากรอกข้อมูล หรือ หน่วยกิตควรไม่เกิน 3")
       .isNumeric()
       .isIn([1, 1.5, 2, 2.5, 3])
       .not()

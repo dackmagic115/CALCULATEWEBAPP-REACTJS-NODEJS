@@ -8,7 +8,14 @@ import TextField from "@material-ui/core/TextField";
 import RemoveIcon from "@material-ui/icons/Remove";
 import AddIcon from "@material-ui/icons/Add";
 import { IconButton } from "@material-ui/core";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
 import axios from "axios";
+import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -27,6 +34,13 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
   },
+  table: {
+    minWidth: 650,
+  },
+  error: {
+    textAlign: "center",
+    color: "red",
+  },
 }));
 
 function App() {
@@ -38,13 +52,19 @@ function App() {
 
   const [response, setResponse] = useState(null);
   const [result, setResult] = useState(null);
-
+  const [error, setError] = useState(null);
+  const [errorResponse, setErrorResponse] = useState(null);
   useEffect(() => {
     if (response) {
       setResult(response);
-      console.log(result);
+    } else {
+      setResult(null);
+      if (errorResponse) {
+        setError(errorResponse);
+        console.log(error);
+      }
     }
-  }, [response]);
+  }, [response, errorResponse]);
 
   const handleChangeInput = (index, event) => {
     const values = [...inputFields];
@@ -69,7 +89,8 @@ function App() {
 
       setResponse(res.data);
     } catch (error) {
-      console.log(error);
+      setResponse(null);
+      setErrorResponse(error.response.data);
     }
   };
 
@@ -145,18 +166,58 @@ function App() {
               </form>
             </Container>
           </Grid>
+          {error ? (
+            <Grid item xs={12} className={classes.error}>
+              {error.errors.map((res) => {
+                return <h3>***{res.msg}***</h3>;
+              })}
+            </Grid>
+          ) : null}
+
           <Grid item xs={12} className={classes.right}>
-            {result
-              ? result.info.map((data) => {
-                  return (
-                    <div>
-                      {data.name} {data.score} {data.credit} {data.gradeNumber}{" "}
-                      {data.gradeAlphabet}{" "}
-                    </div>
-                  );
-                })
-              : null}
-            {result ? <div>{result.averageGrade}</div> : null}
+            <h1> Result </h1>
+            <div>
+              <TableContainer component={Paper}>
+                <Table className={classes.table} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Subject Name</TableCell>
+                      <TableCell align="right">Credit</TableCell>
+                      <TableCell align="right">Score</TableCell>
+                      <TableCell align="right">Grade Number</TableCell>
+                      <TableCell align="right">Grade Alphabet</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {result
+                      ? result.info.map((data) => {
+                          return (
+                            <TableRow key={data.name}>
+                              <TableCell component="th" scope="row">
+                                {data.name}
+                              </TableCell>
+                              <TableCell align="right">{data.credit}</TableCell>
+                              <TableCell align="right">{data.score}</TableCell>
+                              <TableCell align="right">
+                                {data.gradeNumber}
+                              </TableCell>
+                              <TableCell align="right">
+                                {data.gradeAlphabet}
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })
+                      : null}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </div>
+
+            {result ? (
+              <div>
+                <h1>Average Grade: {result.averageGrade}</h1>
+              </div>
+            ) : null}
           </Grid>
         </Grid>
       </div>
